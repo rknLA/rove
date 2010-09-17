@@ -128,7 +128,6 @@ static long file_src_callback(void *cb_data, float **data) {
 #endif
 
 static void file_monome_out(file_t *self, r_monome_t *monome) {
-	static int blink = 0;
 	r_monome_position_t pos;
 	uint16_t r = 0;
 
@@ -142,7 +141,8 @@ static void file_monome_out(file_t *self, r_monome_t *monome) {
 
 	if( MONOME_POS_CMP(&pos, &self->monome_pos_old)
 		|| self->force_monome_update
-		|| (!file_mapped(self) && !(blink = (blink + 1) % 7)) ) {
+		|| !file_mapped(self) ) {
+
 		if( self->force_monome_update ) {
 			monome->dirty_field &= ~(1 << self->y);
 			self->force_monome_update = 0;
